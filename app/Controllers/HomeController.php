@@ -47,7 +47,18 @@ class HomeController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->listErrors());
         }
 
-        $post = $this->request->getPost(['user', 'password', 'rut', 'email']);
+        $post = $this->request->getPost(['password', 'rut', 'email']);
+
+        helper('util_helper');
+        
+
+
+
+    //    echo validateRut($post['user']);exit;
+
+        if (!validateRut($post['rut'])) {
+            return redirect()->back()->withInput()->with('errors', 'Rut inválido');
+        }
 
         $API = new RouterosAPI();
 

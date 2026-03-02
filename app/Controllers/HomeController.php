@@ -37,9 +37,9 @@ class HomeController extends BaseController
 
         $rules = [
             'rut' => 'required|max_length[40]',
-            'password' => 'required|max_length[50]|min_length[8]',
-            'email' => 'required|max_length[50]|valid_email',
-            'repassword' => 'matches[password]'
+            // 'password' => 'required|max_length[50]|min_length[8]',
+            'email' => 'max_length[50]|valid_email',
+            // 'repassword' => 'matches[password]'
         ];
 
         if (!$this->validate($rules)) {
@@ -47,9 +47,9 @@ class HomeController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->listErrors());
         }
 
-        $post = $this->request->getPost(['password', 'rut', 'email']);
+        $post = $this->request->getPost(['rut', 'email']);
 
-        helper('util_helper');   
+        helper('util_helper');
 
         if (!validateRut($post['rut'])) {
             return redirect()->back()->withInput()->with('errors', 'Rut inválido');
@@ -60,8 +60,8 @@ class HomeController extends BaseController
         if ($API->connect(env('ip'), env('username'), env('password'))) {
             $response = $API->comm('/ip/hotspot/user/add', [
                 'name' => $post['rut'],
-                'password' => $post['password'],
-                'email' => $post['email'],
+                'password' => $post['rut'],
+                'email' => $post['email'] ?: 'Sin email',
             ]);
             $API->disconnect(); // Desconectar de la API
         } else {
@@ -107,39 +107,31 @@ class HomeController extends BaseController
 
     public function patchUser()
     {
-        $post = $this->request->getPost(['repassword', 'password', 'name', 'email', 'id', 'disabled']);
+        $post = $this->request->getPost(['name', 'email', 'id', 'disabled']);
         // print_r($_POST);exit;
-        if ($post['password']  || $post['repassword']) {
-            $rules = [
-                'name' => 'required|max_length[40]',
-                'password' => 'required|max_length[50]|min_length[8]',
-                'email' => 'required|max_length[50]|valid_email',
-                'repassword' => 'matches[password]'
-            ];
-        } else {
 
-            $rules = [
-                'name' => 'required|max_length[40]',
-                'email' => 'required|max_length[50]|valid_email',
-            ];
-        }
+
+        $rules = [
+            'name' => 'required|max_length[40]',
+            'email' => 'max_length[50]|valid_email',
+        ];
+
 
         if (!$this->validate($rules)) {
 
             return redirect()->to('home/users/edit/' . str_replace('*', '', $post['id']))->withInput()->with('errors', $this->validator->listErrors());
         }
 
-        helper('util_helper');   
+        helper('util_helper');
 
         if (!validateRut($post['name'])) {
             return redirect()->to('home/users/edit/' . str_replace('*', '', $post['id']))->withInput()->with('errors', 'Rut inválido');
-
         }
 
         $API = new RouterosAPI();
         $toupdate = [];
         foreach ($post as $key => $val) {
-            if ($val && $key != 'id' && $key != 'repassword') {
+            if (!empty($val)) {
                 $toupdate[$key] = $val;
             }
         }
@@ -174,7 +166,7 @@ class HomeController extends BaseController
                 // '=.proplist' => '', // Obtener todos los campos
             ]);
             $API->disconnect(); // Desconectar de la API
-          
+
             if (isset($response['!trap'])) {
                 // echo 'Error: ' . $response['!trap'][0]['message'];exit;
                 session()->setFlashdata('errors', $response['!trap'][0]['message']);

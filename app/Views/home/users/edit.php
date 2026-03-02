@@ -19,7 +19,7 @@
                         <label for="email" class="form-label">Email address</label>
                         <input type="email" autocomplete="off" class="form-control" id="email" name="email" placeholder="name@example.com" value="<?= isset($usuario[0]['email']) ? esc($usuario[0]['email']) : '' ?>">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="pass" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="pass" name="password" placeholder="*********">
                         <div id="passwordHelpBlock" class="form-text">
@@ -29,7 +29,7 @@
                     <div class="mb-3">
                         <label for="repass" class="form-label">Repetir contraseña</label>
                         <input type="password" class="form-control" id="repass" name="repassword" placeholder="*********">
-                    </div>
+                    </div> -->
 
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="disabled" id="disabled1" value="false" <?= esc($usuario[0]['disabled']) === 'false'? 'checked':'' ?> >

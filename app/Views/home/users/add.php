@@ -18,14 +18,14 @@
                         <label for="email" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value="<?= set_value('email'); ?>">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="pass" class="form-label">Contraseña</label>
                         <input type="password" class="form-control" id="pass" name="password" placeholder="*********">
                     </div>
                     <div class="mb-3">
                         <label for="repass" class="form-label">Repetir contraseña</label>
                         <input type="password" class="form-control" id="repass" name="repassword" placeholder="*********">
-                    </div>
+                    </div> -->
                     <div class="mb-3 mt-3 d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </div>

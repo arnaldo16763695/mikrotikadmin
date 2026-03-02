@@ -27,4 +27,4 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 });
 $routes->get('/logout', 'LoginController::logout');
 
-$routes->post('/auth', 'LoginController::auth');
+$routes->post('/auth', 'LoginController::auth'); 

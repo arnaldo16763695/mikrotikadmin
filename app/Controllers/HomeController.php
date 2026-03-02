@@ -131,7 +131,7 @@ class HomeController extends BaseController
         $API = new RouterosAPI();
         $toupdate = [];
         foreach ($post as $key => $val) {
-            if (!empty($val)) {
+            if (!empty($val) && $key != 'id') {  // ← ¡Agregamos esta condición!
                 $toupdate[$key] = $val;
             }
         }
